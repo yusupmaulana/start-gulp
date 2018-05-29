@@ -1,7 +1,8 @@
 let gulp   = require('gulp'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
-    sass   = require('gulp-sass');
+    sass   = require('gulp-sass'),
+    connect = require('gulp-connect');
 
 // file javascript
 gulp.task('scripts', function(){
@@ -15,7 +16,21 @@ gulp.task('scripts', function(){
 gulp.task('styles', function(){
     gulp.src('asset-dev/css/**/*.scss')
         .pipe(sass({outputStyle: 'compressed'}))/*untuk compile dan minify sass*/
-        .pipe(gulp.dest('assets/css'));
+        .pipe(gulp.dest('assets/css'))
+        .pipe(connect.reload());
 });
 
-gulp.task('default', ['scripts', 'styles']);
+
+gulp.task('connect', function(){
+  connect.server({
+    livereload: true
+  });
+});
+
+
+// watch
+gulp.task('watch', function(){
+  gulp.watch('asset-dev/css/**/*.scss', ['styles']);
+});
+
+gulp.task('default', ['scripts', 'styles', 'watch', 'connect']);
