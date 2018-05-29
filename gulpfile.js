@@ -1,6 +1,7 @@
 let gulp   = require('gulp'),
     uglify = require('gulp-uglify'),
-    concat = require('gulp-concat');
+    concat = require('gulp-concat'),
+    sass   = require('gulp-sass');
 
 // file javascript
 gulp.task('scripts', function(){
@@ -10,4 +11,11 @@ gulp.task('scripts', function(){
         .pipe(gulp.dest('assets/js'));
 });
 
-gulp.task('default', ['scripts']);
+// file stylesheet
+gulp.task('styles', function(){
+    gulp.src('asset-dev/css/**/*.scss')
+        .pipe(sass({outputStyle: 'compressed'}))/*untuk compile dan minify sass*/
+        .pipe(gulp.dest('assets/css'));
+});
+
+gulp.task('default', ['scripts', 'styles']);
