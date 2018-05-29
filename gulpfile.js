@@ -2,7 +2,8 @@ let gulp   = require('gulp'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
     sass   = require('gulp-sass'),
-    connect = require('gulp-connect');
+    connect = require('gulp-connect'),
+    imagemin = require('gulp-imagemin');
 
 // file javascript
 gulp.task('scripts', function(){
@@ -20,7 +21,14 @@ gulp.task('styles', function(){
         .pipe(connect.reload());
 });
 
+//compress image
+gulp.task('compressImg', function(){
+  gulp.src('asset-dev/images/*')
+  .pipe(imagemin())
+  .pipe(gulp.dest('assets/images'));
+});
 
+//livereload
 gulp.task('connect', function(){
   connect.server({
     livereload: true
@@ -33,4 +41,5 @@ gulp.task('watch', function(){
   gulp.watch('asset-dev/css/**/*.scss', ['styles']);
 });
 
-gulp.task('default', ['scripts', 'styles', 'watch', 'connect']);
+//running default task
+gulp.task('default', ['scripts', 'styles', 'watch', 'connect', 'compressImg']);
